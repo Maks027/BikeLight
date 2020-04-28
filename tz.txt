@@ -1,0 +1,18 @@
+Luminile sin fata si din spate pot functiona in trei regimuri:
+	-deconectat
+	-continuu
+	-intermitent
+Comutarea regimurilor se efectueaza la tastarea repetata a butoanelor care corespund luminilor respective.
+Dupa conectarea alimentarii, ambele lumini sunt deconectate. La tastarea singulara a butonului frontal, lumina 
+din fata trece in regim continuu, iar cea din spate in regim intermitent. Ordinea de comutare la tastarea 
+repetata a butoanelor este indicata. 
+
+Luminozitatea se seteaza prin tastarea butonului pe timp indelungat. Respectiv, la prima tastare, luminozitatea
+creste gradual, iar la tastarea repetata, scade. La necesitate va fi implementat algoritmul simplificat de 
+gama-corectie. Nivelul de luminozitate pentru fiecare din lumini trebuie sa fie pastrat in pemorie permaneta
+pentru a putea fi restabilita la urmatoarea conectare. Posibil sa fie necesara limitarea pragului de sus
+a luminozitatii pentru a evita supraincalzirea LED-urilor.
+
+Masurarea tensiunii pe acumulator si afisarea pe indicatoare se va efectua doar in stare deconectata.
+
+Optional, daca ambele lumini sunt deconectate pentru un interval lung de timp, sistemul trece in sleep mode.

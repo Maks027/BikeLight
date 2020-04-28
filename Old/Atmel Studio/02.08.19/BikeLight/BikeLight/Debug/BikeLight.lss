@@ -1,0 +1,415 @@
+
+BikeLight.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000206  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000002  00800060  00000206  0000029a  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000008  00800062  00800062  0000029c  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  0000029c  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000060  00000000  00000000  000002cc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   000002d0  00000000  00000000  0000032c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000018f  00000000  00000000  000005fc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   00000175  00000000  00000000  0000078b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000000d0  00000000  00000000  00000900  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000001c9  00000000  00000000  000009d0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    0000016a  00000000  00000000  00000b99  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000050  00000000  00000000  00000d03  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	10 c0       	rjmp	.+32     	; 0x22 <__ctors_end>
+   2:	2a c0       	rjmp	.+84     	; 0x58 <__bad_interrupt>
+   4:	29 c0       	rjmp	.+82     	; 0x58 <__bad_interrupt>
+   6:	28 c0       	rjmp	.+80     	; 0x58 <__bad_interrupt>
+   8:	27 c0       	rjmp	.+78     	; 0x58 <__bad_interrupt>
+   a:	26 c0       	rjmp	.+76     	; 0x58 <__bad_interrupt>
+   c:	25 c0       	rjmp	.+74     	; 0x58 <__bad_interrupt>
+   e:	24 c0       	rjmp	.+72     	; 0x58 <__bad_interrupt>
+  10:	23 c0       	rjmp	.+70     	; 0x58 <__bad_interrupt>
+  12:	a4 c0       	rjmp	.+328    	; 0x15c <__vector_9>
+  14:	21 c0       	rjmp	.+66     	; 0x58 <__bad_interrupt>
+  16:	20 c0       	rjmp	.+64     	; 0x58 <__bad_interrupt>
+  18:	d8 c0       	rjmp	.+432    	; 0x1ca <__vector_12>
+  1a:	1e c0       	rjmp	.+60     	; 0x58 <__bad_interrupt>
+  1c:	1d c0       	rjmp	.+58     	; 0x58 <__bad_interrupt>
+  1e:	1c c0       	rjmp	.+56     	; 0x58 <__bad_interrupt>
+  20:	1b c0       	rjmp	.+54     	; 0x58 <__bad_interrupt>
+
+00000022 <__ctors_end>:
+  22:	11 24       	eor	r1, r1
+  24:	1f be       	out	0x3f, r1	; 63
+  26:	cf e5       	ldi	r28, 0x5F	; 95
+  28:	d1 e0       	ldi	r29, 0x01	; 1
+  2a:	de bf       	out	0x3e, r29	; 62
+  2c:	cd bf       	out	0x3d, r28	; 61
+
+0000002e <__do_copy_data>:
+  2e:	10 e0       	ldi	r17, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	e6 e0       	ldi	r30, 0x06	; 6
+  36:	f2 e0       	ldi	r31, 0x02	; 2
+  38:	02 c0       	rjmp	.+4      	; 0x3e <__SP_H__>
+  3a:	05 90       	lpm	r0, Z+
+  3c:	0d 92       	st	X+, r0
+  3e:	a2 36       	cpi	r26, 0x62	; 98
+  40:	b1 07       	cpc	r27, r17
+  42:	d9 f7       	brne	.-10     	; 0x3a <__do_copy_data+0xc>
+
+00000044 <__do_clear_bss>:
+  44:	20 e0       	ldi	r18, 0x00	; 0
+  46:	a2 e6       	ldi	r26, 0x62	; 98
+  48:	b0 e0       	ldi	r27, 0x00	; 0
+  4a:	01 c0       	rjmp	.+2      	; 0x4e <.do_clear_bss_start>
+
+0000004c <.do_clear_bss_loop>:
+  4c:	1d 92       	st	X+, r1
+
+0000004e <.do_clear_bss_start>:
+  4e:	aa 36       	cpi	r26, 0x6A	; 106
+  50:	b2 07       	cpc	r27, r18
+  52:	e1 f7       	brne	.-8      	; 0x4c <.do_clear_bss_loop>
+  54:	c4 d0       	rcall	.+392    	; 0x1de <main>
+  56:	d5 c0       	rjmp	.+426    	; 0x202 <_exit>
+
+00000058 <__bad_interrupt>:
+  58:	d3 cf       	rjmp	.-90     	; 0x0 <__vectors>
+
+0000005a <initSystem>:
+volatile uint16_t f_cnt = 0, b_cnt = 0;
+
+void initSystem()
+{
+	//////////////////////////////////////////////////////////////////////////
+	DDRA |= (1 << POWER_CTRL_DDR);
+  5a:	d3 9a       	sbi	0x1a, 3	; 26
+	PORTA |= (1 << BUTTON_FRONT_PORT);	//enable pullup
+  5c:	dc 9a       	sbi	0x1b, 4	; 27
+	PORTB |= (1 << BUTTON_BACK_PORT);	//enable pullup 
+  5e:	c2 9a       	sbi	0x18, 2	; 24
+	
+	//////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////
+	ADC_ENABLE();
+  60:	37 9a       	sbi	0x06, 7	; 6
+	ADMUX = 0;
+  62:	17 b8       	out	0x07, r1	; 7
+	ADMUX |= (1 << REFS1);
+  64:	3f 9a       	sbi	0x07, 7	; 7
+	ADCSRA |= (1 << ADPS1) | (1 << ADPS0);
+  66:	86 b1       	in	r24, 0x06	; 6
+  68:	83 60       	ori	r24, 0x03	; 3
+  6a:	86 b9       	out	0x06, r24	; 6
+	DIDR0 |= (1 << ADC0D);
+  6c:	08 9a       	sbi	0x01, 0	; 1
+	//////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////
+	DDRA |= (1 << FRONT_LIGHT_DDR) | (1 << BACK_LIGHT_DDR);
+  6e:	8a b3       	in	r24, 0x1a	; 26
+  70:	80 66       	ori	r24, 0x60	; 96
+  72:	8a bb       	out	0x1a, r24	; 26
+	TCCR1A |= (1 << WGM11);
+  74:	8f b5       	in	r24, 0x2f	; 47
+  76:	82 60       	ori	r24, 0x02	; 2
+  78:	8f bd       	out	0x2f, r24	; 47
+	TCCR1B |= (1 << WGM12) | (1 << WGM13) | (1 << CS10);
+  7a:	8e b5       	in	r24, 0x2e	; 46
+  7c:	89 61       	ori	r24, 0x19	; 25
+  7e:	8e bd       	out	0x2e, r24	; 46
+	ICR1 = PWM_FREQ;
+  80:	88 ee       	ldi	r24, 0xE8	; 232
+  82:	93 e0       	ldi	r25, 0x03	; 3
+  84:	95 bd       	out	0x25, r25	; 37
+  86:	84 bd       	out	0x24, r24	; 36
+	//////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////
+	TCCR0A |= (1 << WGM01);
+  88:	80 b7       	in	r24, 0x30	; 48
+  8a:	82 60       	ori	r24, 0x02	; 2
+  8c:	80 bf       	out	0x30, r24	; 48
+	TCCR0B |= (1 << CS01);
+  8e:	83 b7       	in	r24, 0x33	; 51
+  90:	82 60       	ori	r24, 0x02	; 2
+  92:	83 bf       	out	0x33, r24	; 51
+	OCR0A = 125; // 1ms
+  94:	8d e7       	ldi	r24, 0x7D	; 125
+  96:	86 bf       	out	0x36, r24	; 54
+	TIMSK0 |= (1 << OCIE0A);
+  98:	89 b7       	in	r24, 0x39	; 57
+  9a:	82 60       	ori	r24, 0x02	; 2
+  9c:	89 bf       	out	0x39, r24	; 57
+	//////////////////////////////////////////////////////////////////////////
+	
+	//////////////////////////////////////////////////////////////////////////
+	ACSR |= (1 << ACIE) | (1 << ACBG) | (1 << ACIS0) | ( 1 << ACIS1);
+  9e:	88 b1       	in	r24, 0x08	; 8
+  a0:	8b 64       	ori	r24, 0x4B	; 75
+  a2:	88 b9       	out	0x08, r24	; 8
+	//////////////////////////////////////////////////////////////////////////
+	
+	sei();	
+  a4:	78 94       	sei
+  a6:	08 95       	ret
+
+000000a8 <blinkFrontLight>:
+void blinkFrontLight(uint16_t on_time, uint16_t off_time)
+{
+	static uint8_t last_state = ON;
+	
+	
+	if (last_state == ON)
+  a8:	20 91 61 00 	lds	r18, 0x0061
+  ac:	21 30       	cpi	r18, 0x01	; 1
+  ae:	91 f4       	brne	.+36     	; 0xd4 <blinkFrontLight+0x2c>
+	{
+		if (f_cnt <= off_time)
+  b0:	20 91 64 00 	lds	r18, 0x0064
+  b4:	30 91 65 00 	lds	r19, 0x0065
+  b8:	62 17       	cp	r22, r18
+  ba:	73 07       	cpc	r23, r19
+  bc:	28 f0       	brcs	.+10     	; 0xc8 <blinkFrontLight+0x20>
+		{
+			FRONT_LIGHT_OFF();
+  be:	2f b5       	in	r18, 0x2f	; 47
+  c0:	2f 77       	andi	r18, 0x7F	; 127
+  c2:	2f bd       	out	0x2f, r18	; 47
+  c4:	dd 98       	cbi	0x1b, 5	; 27
+  c6:	06 c0       	rjmp	.+12     	; 0xd4 <blinkFrontLight+0x2c>
+		}
+		else
+		{
+			last_state = OFF;
+  c8:	10 92 61 00 	sts	0x0061, r1
+			f_cnt = 0;
+  cc:	10 92 65 00 	sts	0x0065, r1
+  d0:	10 92 64 00 	sts	0x0064, r1
+		}
+	}
+	
+	if (last_state == OFF)
+  d4:	20 91 61 00 	lds	r18, 0x0061
+  d8:	21 11       	cpse	r18, r1
+  da:	12 c0       	rjmp	.+36     	; 0x100 <blinkFrontLight+0x58>
+	{
+		if (f_cnt <= on_time)
+  dc:	20 91 64 00 	lds	r18, 0x0064
+  e0:	30 91 65 00 	lds	r19, 0x0065
+  e4:	82 17       	cp	r24, r18
+  e6:	93 07       	cpc	r25, r19
+  e8:	20 f0       	brcs	.+8      	; 0xf2 <blinkFrontLight+0x4a>
+		{
+			FRONT_LIGHT_ON();
+  ea:	8f b5       	in	r24, 0x2f	; 47
+  ec:	80 68       	ori	r24, 0x80	; 128
+  ee:	8f bd       	out	0x2f, r24	; 47
+  f0:	08 95       	ret
+		}
+		else
+		{
+			last_state = ON;
+  f2:	81 e0       	ldi	r24, 0x01	; 1
+  f4:	80 93 61 00 	sts	0x0061, r24
+			f_cnt = 0;
+  f8:	10 92 65 00 	sts	0x0065, r1
+  fc:	10 92 64 00 	sts	0x0064, r1
+ 100:	08 95       	ret
+
+00000102 <blinkBackLight>:
+void blinkBackLight(uint16_t on_time, uint16_t off_time)
+{
+	static uint8_t last_state = ON;
+	
+	
+	if (last_state == ON)
+ 102:	20 91 60 00 	lds	r18, 0x0060
+ 106:	21 30       	cpi	r18, 0x01	; 1
+ 108:	91 f4       	brne	.+36     	; 0x12e <blinkBackLight+0x2c>
+	{
+		if (b_cnt <= off_time)
+ 10a:	20 91 62 00 	lds	r18, 0x0062
+ 10e:	30 91 63 00 	lds	r19, 0x0063
+ 112:	62 17       	cp	r22, r18
+ 114:	73 07       	cpc	r23, r19
+ 116:	28 f0       	brcs	.+10     	; 0x122 <blinkBackLight+0x20>
+		{
+			BACK_LIGHT_OFF();
+ 118:	2f b5       	in	r18, 0x2f	; 47
+ 11a:	2f 7d       	andi	r18, 0xDF	; 223
+ 11c:	2f bd       	out	0x2f, r18	; 47
+ 11e:	de 98       	cbi	0x1b, 6	; 27
+ 120:	06 c0       	rjmp	.+12     	; 0x12e <blinkBackLight+0x2c>
+		}
+		else
+		{
+			last_state = OFF;
+ 122:	10 92 60 00 	sts	0x0060, r1
+			b_cnt = 0;
+ 126:	10 92 63 00 	sts	0x0063, r1
+ 12a:	10 92 62 00 	sts	0x0062, r1
+		}
+	}
+	
+	if (last_state == OFF)
+ 12e:	20 91 60 00 	lds	r18, 0x0060
+ 132:	21 11       	cpse	r18, r1
+ 134:	12 c0       	rjmp	.+36     	; 0x15a <blinkBackLight+0x58>
+	{
+		if (b_cnt <= on_time)
+ 136:	20 91 62 00 	lds	r18, 0x0062
+ 13a:	30 91 63 00 	lds	r19, 0x0063
+ 13e:	82 17       	cp	r24, r18
+ 140:	93 07       	cpc	r25, r19
+ 142:	20 f0       	brcs	.+8      	; 0x14c <blinkBackLight+0x4a>
+		{
+			BACK_LIGHT_ON();
+ 144:	8f b5       	in	r24, 0x2f	; 47
+ 146:	80 62       	ori	r24, 0x20	; 32
+ 148:	8f bd       	out	0x2f, r24	; 47
+ 14a:	08 95       	ret
+		}
+		else
+		{
+			last_state = ON;
+ 14c:	81 e0       	ldi	r24, 0x01	; 1
+ 14e:	80 93 60 00 	sts	0x0060, r24
+			b_cnt = 0;
+ 152:	10 92 63 00 	sts	0x0063, r1
+ 156:	10 92 62 00 	sts	0x0062, r1
+ 15a:	08 95       	ret
+
+0000015c <__vector_9>:
+		}
+	}
+}
+
+ISR(TIM0_COMPA_vect)
+{
+ 15c:	1f 92       	push	r1
+ 15e:	0f 92       	push	r0
+ 160:	0f b6       	in	r0, 0x3f	; 63
+ 162:	0f 92       	push	r0
+ 164:	11 24       	eor	r1, r1
+ 166:	8f 93       	push	r24
+ 168:	9f 93       	push	r25
+ 16a:	af 93       	push	r26
+ 16c:	bf 93       	push	r27
+	ms++;
+ 16e:	80 91 66 00 	lds	r24, 0x0066
+ 172:	90 91 67 00 	lds	r25, 0x0067
+ 176:	a0 91 68 00 	lds	r26, 0x0068
+ 17a:	b0 91 69 00 	lds	r27, 0x0069
+ 17e:	01 96       	adiw	r24, 0x01	; 1
+ 180:	a1 1d       	adc	r26, r1
+ 182:	b1 1d       	adc	r27, r1
+ 184:	80 93 66 00 	sts	0x0066, r24
+ 188:	90 93 67 00 	sts	0x0067, r25
+ 18c:	a0 93 68 00 	sts	0x0068, r26
+ 190:	b0 93 69 00 	sts	0x0069, r27
+	f_cnt++;
+ 194:	80 91 64 00 	lds	r24, 0x0064
+ 198:	90 91 65 00 	lds	r25, 0x0065
+ 19c:	01 96       	adiw	r24, 0x01	; 1
+ 19e:	90 93 65 00 	sts	0x0065, r25
+ 1a2:	80 93 64 00 	sts	0x0064, r24
+	b_cnt++;
+ 1a6:	80 91 62 00 	lds	r24, 0x0062
+ 1aa:	90 91 63 00 	lds	r25, 0x0063
+ 1ae:	01 96       	adiw	r24, 0x01	; 1
+ 1b0:	90 93 63 00 	sts	0x0063, r25
+ 1b4:	80 93 62 00 	sts	0x0062, r24
+}
+ 1b8:	bf 91       	pop	r27
+ 1ba:	af 91       	pop	r26
+ 1bc:	9f 91       	pop	r25
+ 1be:	8f 91       	pop	r24
+ 1c0:	0f 90       	pop	r0
+ 1c2:	0f be       	out	0x3f, r0	; 63
+ 1c4:	0f 90       	pop	r0
+ 1c6:	1f 90       	pop	r1
+ 1c8:	18 95       	reti
+
+000001ca <__vector_12>:
+
+ISR(ANA_COMP_vect)
+{
+ 1ca:	1f 92       	push	r1
+ 1cc:	0f 92       	push	r0
+ 1ce:	0f b6       	in	r0, 0x3f	; 63
+ 1d0:	0f 92       	push	r0
+ 1d2:	11 24       	eor	r1, r1
+	
+	
+}
+ 1d4:	0f 90       	pop	r0
+ 1d6:	0f be       	out	0x3f, r0	; 63
+ 1d8:	0f 90       	pop	r0
+ 1da:	1f 90       	pop	r1
+ 1dc:	18 95       	reti
+
+000001de <main>:
+	return ADC;
+}
+
+int main(void)
+{
+	initSystem();
+ 1de:	3d df       	rcall	.-390    	; 0x5a <initSystem>
+	if (val >= PWM_FREQ)
+		val = PWM_FREQ;
+	else if(val < 1)
+		val = 0;
+		
+	OCR1A = val;
+ 1e0:	88 ee       	ldi	r24, 0xE8	; 232
+ 1e2:	93 e0       	ldi	r25, 0x03	; 3
+ 1e4:	9b bd       	out	0x2b, r25	; 43
+ 1e6:	8a bd       	out	0x2a, r24	; 42
+	if (val >= PWM_FREQ)
+	val = PWM_FREQ;
+	else if(val < 1)
+	val = 0;
+	
+	OCR1B = val;
+ 1e8:	99 bd       	out	0x29, r25	; 41
+ 1ea:	88 bd       	out	0x28, r24	; 40
+	
+	setFrontPwm(1000);
+	setBackPwm(1000);
+    while(1)
+    {
+		blinkFrontLight(500, 1000);
+ 1ec:	68 ee       	ldi	r22, 0xE8	; 232
+ 1ee:	73 e0       	ldi	r23, 0x03	; 3
+ 1f0:	84 ef       	ldi	r24, 0xF4	; 244
+ 1f2:	91 e0       	ldi	r25, 0x01	; 1
+ 1f4:	59 df       	rcall	.-334    	; 0xa8 <blinkFrontLight>
+		blinkBackLight(1000,500);
+ 1f6:	64 ef       	ldi	r22, 0xF4	; 244
+ 1f8:	71 e0       	ldi	r23, 0x01	; 1
+ 1fa:	88 ee       	ldi	r24, 0xE8	; 232
+ 1fc:	93 e0       	ldi	r25, 0x03	; 3
+ 1fe:	81 df       	rcall	.-254    	; 0x102 <blinkBackLight>
+ 200:	f5 cf       	rjmp	.-22     	; 0x1ec <main+0xe>
+
+00000202 <_exit>:
+ 202:	f8 94       	cli
+
+00000204 <__stop_program>:
+ 204:	ff cf       	rjmp	.-2      	; 0x204 <__stop_program>

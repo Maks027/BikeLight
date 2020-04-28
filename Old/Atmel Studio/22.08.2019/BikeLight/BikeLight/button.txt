@@ -1,0 +1,82 @@
+if (FRONT_BUTTON_PRESSED)
+{
+	if (press_flag == RESET)
+	{
+		press_flag = SET;
+		last_ms = ms;	
+	}
+	if (db_flag == RESET)
+	{
+		db_flag = SET;
+	}
+			
+	if ((ms - last_ms) >= LONG_PRESS_DELAY)
+	{
+		incr_delay++;		
+		if (incr_delay > INCREMENT_DELAY)
+		{
+			incr_delay = 0;
+			if (!f_b_long_cnt)
+			{
+				if (front_pwm < PWM_FREQ)
+					front_pwm++;
+				else
+					front_pwm = PWM_FREQ;
+						
+				setFrontPwm(front_pwm);
+			}
+					
+			if (f_b_long_cnt)
+			{
+				if (front_pwm > 0)
+					front_pwm--;
+				else
+					front_pwm = 0;
+				
+				setFrontPwm(front_pwm);
+			}
+		}	
+	}
+}
+		
+if ((press_flag == SET) && FRONT_BUTTON_RELEASED)
+{
+	if ((ms - last_ms) >= LONG_PRESS_DELAY)
+	{
+		press_flag = RESET;
+		f_b_long_cnt ^= 1;
+	}
+	else
+	{
+		if ((ms - last_ms) >= DOUBLE_PRESS_DELAY)
+		{
+			press_flag = RESET;
+			press_cnt = 0;
+			front_pwm = 100;
+			setFrontPwm(front_pwm);
+		}
+		else
+		{
+			if (db_flag == SET)
+			{
+				press_cnt++;
+				db_flag = RESET;
+			}	
+		}	
+	}
+			
+	if (press_cnt >= 2)
+	{
+		press_flag = RESET;
+		press_cnt = 0;
+				
+		if (FRONT_LIGHT_STATE == OFF)
+		{
+			FRONT_LIGHT_ON();
+		}
+		else
+		{
+			FRONT_LIGHT_OFF();
+		}
+	}	
+}
